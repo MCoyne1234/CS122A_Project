@@ -1,5 +1,7 @@
 # import the necessary packages
 import cv2
+import os
+import sys
 
 class ShapeDetector:
 	def __init__(self):
@@ -9,12 +11,12 @@ class ShapeDetector:
 		# initialize the shape name and approximate the contour
 		shape = "unidentified"
 		peri = cv2.arcLength(c, True)
-		approx = cv2.approxPolyDP(c, 0.04 * peri, True)
+		approx = cv2.approxPolyDP(c, 0.03 * peri, True)
 
 		# if the shape is a triangle, it will have 3 vertices
 		if len(approx) == 3:
 			shape = "triangle"
-
+            
 		# if the shape has 4 vertices, it is either a square or
 		# a rectangle
 		elif len(approx) == 4:
@@ -30,10 +32,16 @@ class ShapeDetector:
 		# if the shape is a pentagon, it will have 5 vertices
 		elif len(approx) == 5:
 			shape = "pentagon"
-
-		# otherwise, we assume the shape is a circle
+			#sys.stdout.write("pentagon\n")
+		elif len(approx) == 6:
+			shape = "hexagon"			
+		elif len(approx) == 7:
+			shape = "septagon"
+		elif len(approx) == 8:
+			shape = "octagon"
 		else:
-			shape = "circle"
+			shape = "circle " + str(len(approx))
+			sys.stdout.write("octogon\n")
 
 		# return the name of the shape
 		return shape

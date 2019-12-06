@@ -6,9 +6,13 @@ from pyimagesearch.shapedetector import ShapeDetector
 import argparse
 import imutils
 import cv2
-import gpiozero
+from picamera import PiCamera
+from time import sleep
 
 MIN_THRESH = .000001
+
+camera = PiCamera()
+camera.resolution = (640,480)
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -18,21 +22,23 @@ args = vars(ap.parse_args())
 
 # load the image and resize it to a smaller factor so that
 # the shapes can be approximated better
-image = cv2.imread(args["image"])
+
+camera.start_preview()
+sleep(2)
+camera.capture("./pic.jpg")
+camera.stop_preview()
+
+image = cv2.imread("./pic.jpg")
+#image = cv2.imread(args["image"])
+
 resized = imutils.resize(image, width=300)
 ratio = image.shape[0] / float(resized.shape[0])
 
 # convert the resized image to grayscale, blur it slightly,
 # and threshold it
 gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
-
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-
 thresh = cv2.threshold(blurred, 111, 245, cv2.THRESH_BINARY_INV)[1]
-cv2.imshow("Image", thresh)
-cv2.waitKey(3000)
-cv2.destroyAllWindows()
-
 
 # find contours in the thresholded image and initialize the
 # shape detector
@@ -62,4 +68,6 @@ for c in cnts:
 
         # show the output image
         cv2.imshow("Image", image)
-cv2.waitKey(0)
+cv2.waitKey(5000)
+cv2.destroyAllWindows()
+#cv2.waitKey(0)
