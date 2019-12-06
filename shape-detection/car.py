@@ -16,7 +16,7 @@ def camProc():
 
     camera = PiCamera()
     camera.resolution = (640,480)
-
+    camera.rotation = 180
     # construct the argument parse and parse the arguments
     #ap = argparse.ArgumentParser()
     #ap.add_argument("-i", "--image", required=True,
@@ -72,7 +72,7 @@ def camProc():
 
                 # show the output image
                 cv2.imshow("Image", image)
-        cv2.waitKey(3000)
+        cv2.waitKey(8000)
         cv2.destroyAllWindows()
         #cv2.waitKey(0)
         #return
