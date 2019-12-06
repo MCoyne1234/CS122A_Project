@@ -8,6 +8,8 @@ import imutils
 import cv2
 from picamera import PiCamera
 from time import sleep
+from pins import wheels
+
 
 MIN_THRESH = .000001
 
